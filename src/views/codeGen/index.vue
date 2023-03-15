@@ -92,6 +92,7 @@ import { Search } from "@element-plus/icons-vue";
 const instance = getCurrentInstance();
 
 const formData = ref<FormConfig>({
+  fieldName: "exam",
   items: [
     {
       prop: "name",
