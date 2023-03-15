@@ -75,9 +75,10 @@ interface User {
   date: string;
   name: string;
   address: string;
+  [index: string]: any;
 }
 
-let form = reactive({
+let form = reactive<Record<string, any>>({
   name: undefined,
   age: undefined,
   beginTime: undefined,
@@ -136,7 +137,7 @@ const editColumn = (row: User) => {
   visible.value = true;
   nextTick(() => {
     [...Object.entries(form)].forEach(([k, v]) => {
-      form[k] = row[k];
+      form[k] = row?.[k] ?? undefined;
     });
   });
   // instance?.refs?.addOrUpdateRef?.init(scope.row);
