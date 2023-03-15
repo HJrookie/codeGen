@@ -59,7 +59,6 @@ export default {
     item: {},
   },
   created() {
-    console.log(this.item);
   },
   data() {
     return {
