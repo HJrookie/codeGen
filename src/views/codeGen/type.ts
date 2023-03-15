@@ -46,12 +46,12 @@ type InputText = Omit<typeof ElInput, "inputType"> & {
 };
 export type FormItem = InputType | SelectType | DateType | InputText | InputNumberType;
 export type FormConfig = {
+  fieldName: string; // 类似 exam , 则就是考试的 crud
   formConfig?: {
     inline?: true;
     size?: string;
     labelWidth?: string;
     refName?: string;
-    fieldName?:string; // 类似 exam , 则就是考试的 crud
   };
   items: FormItem[];
 };

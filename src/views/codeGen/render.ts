@@ -22,7 +22,6 @@ const renderFormOptions = (data: FormConfig) => {
   data.items.forEach((item) => {
     if (item.inputType === "select") {
       str += `const ${item.optionsKey} = ${JSON.stringify(item.options)}`;
-      console.log(4444444, str);
     }
   });
   return str;
@@ -89,6 +88,8 @@ const formatFormItemStr = (item: FormItem) => {
 };
 
 export const renderStr = (data: FormConfig) => {
+  const { fieldName } = data;
+  const upperFieldName = fieldName[0].toUpperCase() + fieldName.slice(1);
   let formInitialValues = "";
   let formRules: Record<string, any> = {};
   let formStr = `
@@ -179,17 +180,14 @@ export const renderStr = (data: FormConfig) => {
 import { reactive, ref } from "vue";
 
 import { FormInstance, FormRules,ElMessageBox } from "element-plus";
-import {getExamList,deleteExam} from '@/api/user';
+import {get${upperFieldName}List,delete${upperFieldName}} from '@/api/user';
 const formRef = ref<FormInstance>();
 const instance = getCurrentInstance();
 const visible = ref(false);
 const title = ref('');
 
 
-interface User {
-    date: string;
-  name: string;
-  address: string;
+interface ${upperFieldName} {
   [index: string]: any;
 }
 
@@ -200,8 +198,8 @@ const table = ref<{
   page:number,
   pageSize:number,
   total:number,
-  data:User[],
-  selected:User[],
+  data: ${upperFieldName}[],
+  selected: ${upperFieldName}[],
 }>({
  page: 1,
     pageSize: 10,
@@ -213,7 +211,7 @@ const loading = ref(false)
 const rules = reactive<FormRules>(
   ${JSON.stringify(formRules)}
 );
-const handleSelect = (selected: User[])=>{
+const handleSelect = (selected: ${upperFieldName}[])=>{
     table.value.selected = [...selected];
 }
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -240,7 +238,7 @@ const resetTable = () => {
   table.value.selected = [];
 };
 
-const editColumn= (row: User)=>{
+const editColumn= (row: ${upperFieldName})=>{
     visible.value = true;
     nextTick(() => {
     [...Object.entries(form)].forEach(([k, v]) => {
@@ -266,28 +264,26 @@ const batchDelete= (onlyOne:boolean, id:number)=>{
       autofocus: false,
     })
       .then(() => {
-        deleteExam(data)
+        delete${upperFieldName}(data)
           .then((res) => {
             ElMessage({
               type: "success",
               message: "删除成功",
             });
-            resetTable();
-            initTableData();
           })
           .catch((err) => {
             ElMessage({
               type: "info",
               message: "删除失败,请重试",
             });
+          }).finally(()=>{
             resetTable();
             initTableData();
-          });
+          })
       })
       .catch(() => {});
   
 }
-
 
   const handleSizeChange = (val:number) => {
     table.value.pageSize = val;
@@ -304,7 +300,7 @@ const batchDelete= (onlyOne:boolean, id:number)=>{
     
   const initTableData = (data?:Record<string,any>)=>{
         table.value.selected = [];
-            getExamList({
+            get${upperFieldName}List({
         page: table.value.page,
         pageSize: table.value.pageSize,
         ...data
@@ -324,8 +320,6 @@ const batchDelete= (onlyOne:boolean, id:number)=>{
 onMounted(() => {
   initTableData();
 });
-
-
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;

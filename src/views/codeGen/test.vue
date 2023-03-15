@@ -71,10 +71,7 @@ const instance = getCurrentInstance();
 const visible = ref(false);
 const title = ref("");
 
-interface User {
-  date: string;
-  name: string;
-  address: string;
+interface Exam {
   [index: string]: any;
 }
 
@@ -89,8 +86,8 @@ const table = ref<{
   page: number;
   pageSize: number;
   total: number;
-  data: User[];
-  selected: User[];
+  data: Exam[];
+  selected: Exam[];
 }>({
   page: 1,
   pageSize: 10,
@@ -106,7 +103,7 @@ const rules = reactive<FormRules>({
   sex: [{ required: true, message: "请选择性别", trigger: "change" }],
   des: [{ required: true, message: "请输入描述信息", trigger: "change" }],
 });
-const handleSelect = (selected: User[]) => {
+const handleSelect = (selected: Exam[]) => {
   table.value.selected = [...selected];
 };
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -133,7 +130,7 @@ const resetTable = () => {
   table.value.selected = [];
 };
 
-const editColumn = (row: User) => {
+const editColumn = (row: Exam) => {
   visible.value = true;
   nextTick(() => {
     [...Object.entries(form)].forEach(([k, v]) => {
