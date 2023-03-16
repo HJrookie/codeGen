@@ -299,6 +299,7 @@ const batchDelete= (onlyOne:boolean, id:number)=>{
   };
     
   const initTableData = (data?:Record<string,any>)=>{
+      loading.value = true;
         table.value.selected = [];
             get${upperFieldName}List({
         page: table.value.page,

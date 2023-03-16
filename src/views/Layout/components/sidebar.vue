@@ -3,19 +3,23 @@
     <div class="title">default title</div>
 
     <el-menu default-active="codeGen" router class="el-menu-vertical-demo" :collapse="collapsed" @open="handleOpen" @close="handleClose">
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>Navigator One</span>
-        </template>
-      </el-sub-menu>
       <el-menu-item index="codeGen">
-        <el-icon><icon-menu /></el-icon>
-        <template #title>Navigator Two</template>
+        <el-icon><svg-icon name="code"></svg-icon></el-icon>
+        <template #title>codeGen</template>
       </el-menu-item>
       <el-menu-item index="exams">
+        <el-icon><svg-icon name="example"> </svg-icon></el-icon>
+
+        <template #title>exams</template>
+      </el-menu-item>
+      <el-menu-item index="editable">
         <el-icon><setting /></el-icon>
-        <template #title>Navigator Four</template>
+        <template #title>editable</template>
+      </el-menu-item>
+
+      <el-menu-item index="test">
+        <el-icon><svg-icon name="bug"> </svg-icon></el-icon>
+        <template #title>test-code-gen</template>
       </el-menu-item>
     </el-menu>
   </div>

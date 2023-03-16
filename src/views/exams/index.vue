@@ -79,7 +79,7 @@ const { form, formRules, table, loading, addNew, resetForm, initTableData, editC
         deleteDataFormatter: (v) => v.id,
       },
       initOnMounted: true,
-      queryFormatter: () => ({  parentId: form.value.schoolName, name: form.value.className }), // 0是学校,1 是班级
+      queryFormatter: () => ({ parentId: form.value.schoolName, name: form.value.className }), // 0是学校,1 是班级
     },
     addOrUpdateRefName: "addOrUpdateRef",
     formInfo: {
@@ -97,14 +97,14 @@ const { form, formRules, table, loading, addNew, resetForm, initTableData, editC
     },
   });
 
-// onMounted(() => {
-//   getExamList({ page: 1, pageSize: 10 })
-//     .then((res) => {
-//       schoolNames.value = (res?.data ?? []).map((v) => ({ label: v.name, value: v.id }));
-//     })
-//     .catch((err) => {});
-//   // schoolNames.value = []
-// });
+onMounted(() => {
+  getExamList({ page: 1, pageSize: 10 })
+    .then((res) => {
+      schoolNames.value = (res?.data ?? []).map((v) => ({ label: v.name, value: v.id }));
+    })
+    .catch((err) => {});
+  // schoolNames.value = []
+});
 
 // add or update
 </script>
