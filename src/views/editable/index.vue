@@ -36,15 +36,58 @@
 
   <el-table v-loading="loading" :data="table.data" @selection-change="handleSelect">
     <el-table-column type="selection" width="55"> </el-table-column>
-    <el-table-column prop="name" label="名称" align="center"> </el-table-column>
-    <el-table-column prop="age" label="年龄" align="center"> </el-table-column>
-    <el-table-column prop="beginTime" label="开始时间" align="center"> </el-table-column>
-    <el-table-column prop="sex" label="性别" align="center"> </el-table-column>
-    <el-table-column prop="des" label="描述信息" align="center"> </el-table-column>
-    <el-table-column prop="ac" label="操作" align="center">
+
+    <el-table-column label="开始时间" prop="beginTime" align="center">
       <template #default="scope">
-        <el-button type="text" size="small" @click="editColumn(scope.row)">修改</el-button>
-        <el-button type="danger" size="small" @click="batchDelete(true, scope.row.id)">删除</el-button>
+        <el-date-picker v-if="scope.row.editing" v-model="scope.row.beginTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
+        <span v-else>{{ scope.row.beginTime }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="性别" prop="sex" align="center">
+      <template #default="scope">
+        <template v-if="scope.row.editing">
+          <el-select v-model="scope.row.sex" placeholder="请选择">
+            <el-option v-for="item in sexOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </template>
+        <template v-else>
+          <span>{{ scope.row.sex === 0 ? "男" : "女" }}</span>
+        </template>
+        <!--          <el-input size="small" v-model="scope.row.rspd_status" placeholder="状态"></el-input>-->
+        <!--          <span>{{ scope.row.rspd_status }}</span>-->
+      </template>
+    </el-table-column>
+
+    <el-table-column label="年龄" prop="age" align="center">
+      <template #default="scope">
+        <el-input-number v-if="scope.row.editing" v-model="scope.row.age" :min="0" :max="100" label="年龄"></el-input-number>
+        <span v-else>{{ scope.row.age }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="名称" prop="name" align="center">
+      <template #default="scope">
+        <el-input v-if="scope.row.editing" v-model="scope.row.name" label="名称"></el-input>
+        <span v-else>{{ scope.row.name }}</span>
+      </template>
+    </el-table-column>
+
+    <el-table-column label="描述信息" prop="des" align="center">
+      <template #default="scope">
+        <el-input v-if="scope.row.editing" v-model="scope.row.des" label="描述信息"></el-input>
+        <span v-else>{{ scope.row.des }}</span>
+      </template>
+    </el-table-column>
+
+    <!--    align="center"-->
+    <el-table-column prop="ac" label="操作">
+      <template #default="scope">
+        <el-button v-if="scope.row.editing" size="small" @click="saveInfo(scope.row)">保存</el-button>
+        <el-button type="text" v-else size="small" @click="editColumn(scope.row, true)">修改</el-button>
+
+        <el-button size="small" v-if="scope.row.editing" @click="editColumn(scope.row, false)">取消</el-button>
+        <el-button type="danger" v-else size="small" @click="batchDelete(true, scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -65,7 +108,7 @@
 import { reactive, ref } from "vue";
 
 import { FormInstance, FormRules, ElMessageBox } from "element-plus";
-import { getExamList, deleteExam } from "@/api/user";
+import { getMockDataList, deleteExam } from "@/api/user";
 const formRef = ref<FormInstance>();
 const instance = getCurrentInstance();
 const visible = ref(false);
@@ -122,7 +165,6 @@ const add = () => {
   visible.value = true;
 };
 
-
 const resetTable = () => {
   table.value.page = 1;
   table.value.pageSize = 10;
@@ -131,13 +173,18 @@ const resetTable = () => {
   table.value.selected = [];
 };
 
-const editColumn = (row: Exam) => {
-  visible.value = true;
-  nextTick(() => {
-    [...Object.entries(form)].forEach(([k, v]) => {
-      form[k] = row?.[k] ?? undefined;
-    });
-  });
+const saveInfo = () => {
+  console.log(444444444, "ssssssssave");
+};
+
+const editColumn = (row: Exam, v: boolean) => {
+  row.editing = v;
+  // visible.value = true;
+  // nextTick(() => {
+  //   [...Object.entries(form)].forEach(([k, v]) => {
+  //     form[k] = row?.[k] ?? undefined;
+  //   });
+  // });
   // instance?.refs?.addOrUpdateRef?.init(scope.row);
 };
 
@@ -193,14 +240,15 @@ const handleCur = (val: number) => {
 
 const initTableData = (data?: Record<string, any>) => {
   table.value.selected = [];
-  getExamList({
+  loading.value = true;
+  getMockDataList({
     page: table.value.page,
     pageSize: table.value.pageSize,
     ...data,
   })
     .then((res) => {
       loading.value = false;
-      table.value.data = res?.data ?? [];
+      table.value.data = (res?.data ?? []).map((v) => ({ ...v, age: 0, sex: v.sex & 1 }));
       table.value.total = res?.recordsTotal ?? 0;
     })
     .catch((err) => {

@@ -45,6 +45,7 @@ export function useFormAndTable(props) {
       loading.value = true;
       getDataApi?.(data)
         .then((res) => {
+          l(4444444, res?.data);
           loading.value = false;
           table.value.data = res?.data ?? [];
           table.value.total = res?.recordsTotal ?? 0;

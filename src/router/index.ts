@@ -19,8 +19,14 @@ const routes: RouteRecordRaw[] = [
       {
         path: "/exams",
         component: () => import("@/views/exams/index.vue"),
-        name: "Index",
+        name: "exams",
         meta: { title: "exams", icon: "dashboard" },
+      },
+      {
+        path: "/editable",
+        component: () => import("@/views/editable/index.vue"),
+        name: "editable",
+        meta: { title: "editable", icon: "dashboard" },
       },
       {
         path: "/codeGen",
@@ -37,7 +43,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: "/test",
         component: () => import("@/views/codeGen/test.vue"),
-        name: "examples",
+        name: "test",
         meta: { title: "examples", icon: "dashboard" },
       },
     ],
