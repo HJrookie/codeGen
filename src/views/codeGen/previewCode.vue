@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-model="visible" title="查看" class="cccccc" width="80%" top="3vh">
+    <el-dialog v-model="visible" title="查看生成的代码" class="cccccc" width="80%" top="3vh">
       <el-row type="flex" justify="end">
         <el-button @click="cpppp">
           <el-icon class="iccon"><Check /></el-icon>

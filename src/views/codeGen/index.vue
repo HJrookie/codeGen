@@ -6,18 +6,18 @@
 
       <!--      <el-button type="primary" :icon="ArrowLeft">Previous Page</el-button>-->
       <!--      <el-icon><ArrowLeft /></el-icon>-->
-      <el-button type="primary">
+      <!-- <el-button type="primary">
         <el-icon><ArrowLeft /></el-icon>
         Search
       </el-button>
 
       <el-button type="primary">
         <el-icon class="el-icon--right"><ArrowRight /></el-icon>Upload
-      </el-button>
+      </el-button> -->
     </el-row>
 
     <el-form ref="ruleFormRef" :model="form" :rules="formRules" label-width="100px" labelPosition="top">
-      <el-row v-for="(item, i) of formData.items">
+      <el-row v-for="(item, i) of formData.items" >
         <el-form-item label="类型" prop="pass">
           <el-select v-model="item.inputType" placeholder="Select">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
@@ -45,7 +45,7 @@
       </el-row>
     </el-form>
 
-    <el-button @click="prevCode">CCCCCCCCC</el-button>
+    <el-button @click="prevCode">点击预览</el-button>
 
     <preview-code ref="prevRef"></preview-code>
 

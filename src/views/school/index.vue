@@ -61,7 +61,8 @@ const instance = getCurrentInstance();
 const schoolNames = ref([]);
 
 // table
-const { form, formRules, table, loading, addNew, resetForm, initTableData, editColumn, submitForm, batchDelete, handleSizeChange, handleCur, handleSelect } =
+const { form, formRules, table, loading, addNew, resetForm, initTableData, editColumn, submitForm, batchDelete,
+  handleSizeChange, handleCur, handleSelect } =
   useFormAndTable({
     instance: instance, // 当前的vue 实例
     tableInfo: {
