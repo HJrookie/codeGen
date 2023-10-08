@@ -1,7 +1,13 @@
 <template>
-  <transition name="fade-transform" mode="out-in">
-    <router-view />
-  </transition>
+  <!--  <transition name="fade-transform" mode="out-in">-->
+  <!--    <router-view />-->
+  <!--  </transition>-->
+
+  <router-view v-slot="{ Component }">
+    <transition name="fade-transform" mode="out-in">
+      <component :is="Component" />
+    </transition>
+  </router-view>
   <!--    <router-view>-->
   <!--      &lt;!&ndash;      <transition name="fade-transform" mode="out-in">&ndash;&gt;-->
   <!--      &lt;!&ndash;        <keep-alive :include="tagsViewStore.cachedViews">&ndash;&gt;-->

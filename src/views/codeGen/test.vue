@@ -2,7 +2,7 @@
   <el-dialog :title="title" width="50%" v-model="visible">
     <el-form class="form" status-icon :model="form" :rules="rules" ref="formRef" size="default" label-width="100px">
       <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入名称" clearable />
+        <el-input :modelValue="form.name" @update:modelValue="(val) => val && (form.name = val)" placeholder="请输入名称" clearable />
       </el-form-item>
 
       <el-form-item label="年龄" prop="age">
@@ -118,10 +118,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   });
 };
 
+const handleV = (v) => {
+  console.log(v);
+  form.name = v;
+};
+
 const add = () => {
   visible.value = true;
 };
-
 
 const resetTable = () => {
   table.value.page = 1;
@@ -163,14 +167,14 @@ const batchDelete = (onlyOne: boolean, id: number) => {
             type: "success",
             message: "删除成功",
           });
-          resetTable();
-          initTableData();
         })
         .catch((err) => {
           ElMessage({
             type: "info",
             message: "删除失败,请重试",
           });
+        })
+        .finally(() => {
           resetTable();
           initTableData();
         });
@@ -192,6 +196,7 @@ const handleCur = (val: number) => {
 };
 
 const initTableData = (data?: Record<string, any>) => {
+  loading.value = true;
   table.value.selected = [];
   getExamList({
     page: table.value.page,
